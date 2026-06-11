@@ -47,4 +47,4 @@ Tu peux supprimer ton compte à tout moment (Profil → Supprimer mon compte) : 
 
 ## 8. Droit applicable
 
-Droit français. Litiges soumis aux tribunaux compétents de du ressort compétent, après tentative de résolution amiable (kingstonsarl@gmail.com). 
+Droit français. Litiges soumis aux tribunaux français compétents, après tentative de résolution amiable (kingstonsarl@gmail.com). 
