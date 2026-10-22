@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-YbT3DLVCwqXoNVBB+oWRPK7IysGNhjRI49ghV1QOA1U='; style-src 'sha256-pnpmn5BTDGLKk8BoA0Fi17/YtN2nL9NQq6h8j8pAe9A='; connect-src https://mrixzcpvrwexgxtjznyp.supabase.co; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>Nouveau mot de passe · Join Up</title>
+<style>:root { color-scheme: light; --pink: #E0197F; --pink-d: #C70F6E; --blue: #2A2DD6; --ink: #15122B; --muted: #6E6B8A; --bg: #F6F6FB; --line: #DAD8E8; --danger: #D4375A; --green: #15803D; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); -webkit-text-size-adjust: 100%; }
+.top { background: linear-gradient(135deg, var(--pink) 0%, var(--pink-d) 45%, var(--blue) 100%); padding: 42px 20px 96px; text-align: center; color: #fff; }
+.top p { color: #fff; }
+.brand { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+.tag { margin: 6px 0 0; font-size: 15px; opacity: .92; }
+main { max-width: 440px; margin: -64px auto 0; padding: 0 16px 40px; }
+.card { background: #fff; border-radius: 24px; padding: 26px 22px; box-shadow: 0 18px 40px -22px rgba(21, 18, 43, .35); }
+h1 { margin: 0 0 8px; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; outline: none; }
+p { margin: 0 0 14px; font-size: 15px; line-height: 1.5; color: #413E5E; }
+label { display: block; margin: 16px 0 6px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.field { display: flex; align-items: center; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; }
+.field:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(42, 45, 214, .15); }
+input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 14px; font-size: 17px; color: var(--ink); border-radius: 14px; }
+input:focus { outline: none; }
+.toggle { border: 0; background: transparent; color: var(--blue); font-weight: 700; font-size: 13px; padding: 0 14px; min-height: 44px; cursor: pointer; }
+.rule { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.btn { display: block; width: 100%; margin-top: 20px; border: 0; border-radius: 16px; padding: 16px; font-size: 16px; font-weight: 800; color: #fff; background: linear-gradient(90deg, var(--pink), var(--pink-d)); cursor: pointer; text-align: center; text-decoration: none; }
+.btn[disabled] { opacity: .6; cursor: default; }
+.btn:focus-visible, .toggle:focus-visible, a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.status { min-height: 1.4em; margin: 12px 0 0; font-size: 14px; font-weight: 600; }
+.status.error { color: var(--danger); }
+.status.ok { color: var(--muted); }
+.steps { margin: 0 0 6px; padding-left: 20px; color: #413E5E; font-size: 15px; line-height: 1.55; }
+.foot { margin-top: 18px; text-align: center; font-size: 13px; color: var(--muted); }
+.foot a { color: var(--blue); }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+<p class="brand">Join Up</p>
+<p class="tag">Réinitialisation du mot de passe</p>
+</header>
+<main>
+<section class="card" id="state-form" hidden aria-labelledby="t-form">
+<h1 id="t-form" tabindex="-1">Choisis ton nouveau mot de passe</h1>
+<p>Il remplacera l'ancien pour ton compte Join Up.</p>
+<form id="reset-form" novalidate>
+<label for="password">Nouveau mot de passe</label>
+<div class="field"><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="rule"><button type="button" class="toggle" id="toggle" aria-pressed="false" aria-controls="password password-confirm">Afficher</button></div>
+<p class="rule" id="rule">8 caractères minimum.</p>
+<label for="password-confirm">Confirme-le</label>
+<div class="field"><input id="password-confirm" name="password-confirm" type="password" autocomplete="new-password" minlength="8" required></div>
+<button class="btn" type="submit" id="submit">Enregistrer le mot de passe</button>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+</form>
+</section>
+<section class="card" id="state-done" hidden aria-labelledby="t-done">
+<h1 id="t-done" tabindex="-1">Mot de passe changé ✅</h1>
+<p>Retourne dans l'app Join Up et connecte-toi avec ton nouveau mot de passe.</p>
+<a class="btn" href="https://apps.apple.com/fr/app/join-up-sors-rejoins-vis/id6779167670">Ouvrir Join Up</a>
+</section>
+<section class="card" id="state-invalid" aria-labelledby="t-invalid">
+<h1 id="t-invalid" tabindex="-1">Ce lien n'est plus valable</h1>
+<p>Il a peut-être expiré ou déjà servi. Pour en recevoir un nouveau :</p>
+<ol class="steps"><li>ouvre l'app Join Up ;</li><li>sur l'écran de connexion, touche « Mot de passe oublié ? » ;</li><li>ouvre le lien reçu par e-mail dans l'heure (pense aux spams).</li></ol>
+</section>
+<p class="foot">Besoin d'aide ? <a href="mailto:kingstonsarl@gmail.com?subject=Join%20Up%20-%20mot%20de%20passe">kingstonsarl@gmail.com</a></p>
+</main>
+<script>(function () {
+  "use strict";
+  var SUPABASE_URL = "https://mrixzcpvrwexgxtjznyp.supabase.co";
+  var SUPABASE_KEY = "sb_publishable__aVoKvvPkEE7SKKS0PJAUA_te8xUOhZ";
+  var MIN_LENGTH = 8;
+
+  function parse(str) {
+    var out = {};
+    (str || "").replace(/^[#?]/, "").split("&").forEach(function (pair) {
+      if (!pair) return;
+      var i = pair.indexOf("=");
+      var key = i < 0 ? pair : pair.slice(0, i);
+      var value = i < 0 ? "" : pair.slice(i + 1);
+      try {
+        out[decodeURIComponent(key.replace(/\+/g, " "))] = decodeURIComponent(value.replace(/\+/g, " "));
+      } catch (e) { /* paramètre illisible : ignoré */ }
+    });
+    return out;
+  }
+
+  var fromHash = parse(window.location.hash);
+  var fromQuery = parse(window.location.search);
+  var token = fromHash.access_token || "";
+  var type = fromHash.type || fromQuery.type || "";
+  var linkError = fromHash.error_code || fromHash.error || fromQuery.error_code || fromQuery.error || "";
+  // Le jeton ne reste ni dans la barre d'adresse ni dans l'historique.
+  try { window.history.replaceState(null, "", window.location.pathname); } catch (e) { /* navigateur ancien */ }
+
+  var states = ["state-form", "state-done", "state-invalid"];
+  function show(id) {
+    states.forEach(function (s) { document.getElementById(s).hidden = s !== id; });
+    var title = document.querySelector("#" + id + " h1");
+    if (title) title.focus();
+  }
+
+  if (!token || linkError || (type && type !== "recovery")) {
+    show("state-invalid");
+    return;
+  }
+  show("state-form");
+
+  var form = document.getElementById("reset-form");
+  var pw = document.getElementById("password");
+  var pw2 = document.getElementById("password-confirm");
+  var submit = document.getElementById("submit");
+  var status = document.getElementById("status");
+  var toggle = document.getElementById("toggle");
+
+  toggle.addEventListener("click", function () {
+    var visible = pw.type === "text";
+    pw.type = visible ? "password" : "text";
+    pw2.type = visible ? "password" : "text";
+    toggle.textContent = visible ? "Afficher" : "Masquer";
+    toggle.setAttribute("aria-pressed", visible ? "false" : "true");
+  });
+
+  function say(text, isError, focusField) {
+    status.textContent = text;
+    status.className = "status " + (isError ? "error" : "ok");
+    if (focusField) focusField.focus();
+  }
+  function busy(on) {
+    submit.disabled = on;
+    submit.textContent = on ? "Enregistrement…" : "Enregistrer le mot de passe";
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (submit.disabled) return;
+    var p1 = pw.value;
+    var p2 = pw2.value;
+    if (p1.length < MIN_LENGTH) { say("Au moins " + MIN_LENGTH + " caractères.", true, pw); return; }
+    if (p1 !== p2) { say("Les deux mots de passe ne sont pas identiques.", true, pw2); return; }
+    busy(true);
+    say("", false);
+    fetch(SUPABASE_URL + "/auth/v1/user", {
+      method: "PUT",
+      headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+      body: JSON.stringify({ password: p1 })
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          return { ok: res.ok, status: res.status, body: body || {} };
+        });
+      })
+      .then(function (r) {
+        if (r.ok) {
+          // La session ouverte par le lien ne sert plus : on la ferme.
+          fetch(SUPABASE_URL + "/auth/v1/logout?scope=local", {
+            method: "POST",
+            headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + token }
+          }).catch(function () {});
+          token = "";
+          pw.value = "";
+          pw2.value = "";
+          show("state-done");
+          return;
+        }
+        var code = String(r.body.error_code || "");
+        var message = String(r.body.msg || r.body.message || r.body.error_description || "");
+        if (r.status === 401 || r.status === 403 || code === "bad_jwt" || code === "session_not_found" || code === "session_expired") {
+          show("state-invalid");
+        } else if (code === "same_password" || /different from the old/i.test(message)) {
+          say("Choisis un mot de passe différent de l'ancien.", true, pw);
+        } else if (code === "weak_password" || /weak|at least/i.test(message)) {
+          say("Mot de passe trop faible : allonge-le et mélange lettres, chiffres et symboles.", true, pw);
+        } else if (r.status === 429) {
+          say("Trop d'essais : réessaie dans quelques minutes.", true);
+        } else {
+          say("Impossible d'enregistrer pour l'instant, réessaie.", true);
+        }
+      })
+      .catch(function () { say("Pas de connexion : vérifie ton réseau et réessaie.", true); })
+      .then(function () { busy(false); });
+  });
+})();
+</script>
+</body>
+</html>
